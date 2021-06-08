@@ -1,12 +1,30 @@
 const express = require('express')
 const { exec } = require('child_process')
+const { stringify } = require('querystring')
 
 let app = express()
 
 app.get('/scammer', (req, res) => {
+    let clientIP =
+            req.headers['cf-connecting-ip'] ||
+            req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress
+    console.log(`Request to /scammer/ inbound from ${clientIP} with query ${req.query}`)
     let scammerJSON = require('scammer.json')
-	if (req.queries.uuid) {
-        let uuid = req.queries.uuid
+	if (req.query.uuid) {
+        let uuid = req.query.uuid
+        if (uuid.includes('-')) {
+            let filtered = ''
+            for (let i = 0; i < uuid.length; i++) {
+                if (uuid[i] === '-') {
+                    continue
+                }
+                else {
+                    filtered += uuid[i]
+                }
+            }
+            uuid = filtered
+        }
         if (scammerJSON[uuid]) {
             scammerJSON[uuid].success = true
             res.send(scammerJSON[uuid])
