@@ -13,16 +13,7 @@ app.get('/scammer', (req, res) => {
 	if (req.query.uuid) {
         let uuid = req.query.uuid
         if (uuid.includes('-')) {
-            let filtered = ''
-            for (let i = 0; i < uuid.length; i++) {
-                if (uuid[i] === '-') {
-                    continue
-                }
-                else {
-                    filtered += uuid[i]
-                }
-            }
-            uuid = filtered
+            uuid.replace('-', '')
         }
         if (scammerJSON[uuid]) {
             scammerJSON[uuid].success = true
