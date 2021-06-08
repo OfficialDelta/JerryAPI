@@ -8,7 +8,7 @@ app.get('/scammer', (req, res) => {
             req.headers['cf-connecting-ip'] ||
             req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress
-    console.log(`Request to /scammer/ inbound from ${clientIP} with query ${req.query}`)
+    console.log(`Request to /scammer/ inbound from ${clientIP} with query ${JSON.stringify(req.query)}`)
     let scammerJSON = require('./scammer.json')
 	if (req.query.uuid) {
         let uuid = req.query.uuid
