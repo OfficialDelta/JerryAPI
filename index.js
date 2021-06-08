@@ -11,10 +11,7 @@ app.get('/scammer', (req, res) => {
     console.log(`Request to /scammer/ inbound from ${clientIP} with query ${JSON.stringify(req.query)}`)
     let scammerJSON = require('./scammer.json')
 	if (req.query.uuid) {
-        let uuid = req.query.uuid
-        if (uuid.includes('-')) {
-            uuid.replace('-', '')
-        }
+        let uuid = req.query.uuid.split('-').join('')
         if (scammerJSON[uuid]) {
             scammerJSON[uuid].success = true
             res.send(scammerJSON[uuid])
