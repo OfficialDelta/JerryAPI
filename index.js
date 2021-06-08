@@ -25,7 +25,7 @@ app.get('/scammer', (req, res) => {
 })
 
 app.listen(10000, () => {
-	console.log('Scammer API is listening on port 9000')
+	console.log('Scammer API is listening on port 10000')
 })
 
 setInterval(() => {
