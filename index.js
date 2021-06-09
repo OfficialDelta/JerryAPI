@@ -38,14 +38,14 @@ app.get('/price', (req, res) => {
     let priceJSON = require('./data.json')
     if (req.query.item) {
         let item = req.query.item
-        let foundItem
-        for (const item of priceJSON) {
-            if (item.name === item) {
-                foundItem = item
+        let foundItem = {}
+        for (const itemInfo of priceJSON) {
+            if (itemInfo.name === item) {
+                foundItem = itemInfo
                 break
             }
         }
-        if (foundItem.name === item) {
+        if (foundItem.name) {
             foundItem.success = true
             res.send(foundItem)
         }
