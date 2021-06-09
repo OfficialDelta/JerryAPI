@@ -1,7 +1,10 @@
 const express = require('express')
-const { exec } = require('child_process')
+const https = require('https')
 
 let app = express()
+let priceJSON = {}
+let scammerJSON = {}
+
 
 app.get('/scammer', (req, res) => {
     let clientIP =
@@ -9,7 +12,6 @@ app.get('/scammer', (req, res) => {
         req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress
     console.log(`Request to /scammer inbound from ${clientIP} with query ${JSON.stringify(req.query)}`)
-    let scammerJSON = require('./scammer.json')
     if (req.query.uuid) {
         let uuid = req.query.uuid.split('-').join('').toLowerCase()
         if (scammerJSON[uuid]) {
@@ -35,7 +37,6 @@ app.get('/price', (req, res) => {
         req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress
     console.log(`Request to /price inbound from ${clientIP} with query ${JSON.stringify(req.query)}`)
-    let priceJSON = require('./data.json')
     if (req.query.item) {
         let item = req.query.item
         let foundItem = {}
@@ -62,31 +63,66 @@ app.get('/price', (req, res) => {
     }
 })
 
-app.listen(10000, () => {
+app.listen(10000, async () => {
+    priceJSON = await getSBZData().catch((e) => {
+        console.log('failed to get SBZData with error/status code:', e)
+    })
+    scammerJSON = await getSBZScammers().catch((e) => {
+        console.log('failed to get SBZScammers with error/status code:', e)
+    })
     console.log('Scammer API is listening on port 10000')
 })
 
-setInterval(() => {
-    exec('curl -L -O raw.githubusercontent.com/skyblockz/pricecheckbot/master/scammer.json', (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`)
-            return
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`)
-            return
-        }
-        console.log(`stdout: ${stdout}`)
+setInterval(async () => {
+    priceJSON = await getSBZData().catch((e) => {
+        console.log('failed to get SBZData with error/status code:', e)
     })
-    exec('curl -L -O raw.githubusercontent.com/skyblockz/pricecheckbot/master/data.json', (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`)
-            return
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`)
-            return
-        }
-        console.log(`stdout: ${stdout}`)
+    scammerJSON = await getSBZScammers().catch((e) => {
+        console.log('failed to get SBZScammers with error/status code:', e)
     })
 }, 60 * 1000)
+
+
+async function getSBZScammers() {
+    return new Promise((resolve, reject) => {
+        https.get('https://raw.githubusercontent.com/skyblockz/pricecheckbot/master/scammer.json', res => {
+            if (res.statusCode !== 200) {
+                return reject(new Error(res.statusCode))
+            }
+
+            let data = ''
+
+            res.on('data', chunk => {
+                data += chunk.toString()
+            })
+
+            res.on('end', () => {
+                resolve(JSON.parse(data))
+            })
+        }).on('error', e => {
+            reject(e)
+        })
+    })
+}
+
+async function getSBZData() {
+    return new Promise((resolve, reject) => {
+        https.get('https://raw.githubusercontent.com/skyblockz/pricecheckbot/master/data.json', res => {
+            if (res.statusCode !== 200) {
+                return reject(new Error(res.statusCode))
+            }
+
+            let data = ''
+
+            res.on('data', chunk => {
+                data += chunk.toString()
+            })
+
+            res.on('end', () => {
+                resolve(JSON.parse(data))
+            })
+        }).on('error', e => {
+            reject(e)
+        })
+    })
+}
