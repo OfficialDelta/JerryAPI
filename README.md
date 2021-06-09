@@ -17,9 +17,9 @@ OR
 > api.skybrokers.xyz/scammer?uuid=00617c1e-4e21-4d3a-b04d-ad9d93333dee
 ```js
 "00617c1e4e214d3ab04dad9d93333dee": {
-		"operated_staff": "sadsalt#1010",          // SkyblockZ staff member who added the user to the list
-		"reason": "scammed 1.45M",                 // reason the user is on the scammer list
-		"uuid": "00617c1e4e214d3ab04dad9d93333dee" // the user's uuid
+    "operated_staff": "sadsalt#1010",          // SkyblockZ staff member who added the user to the list
+    "reason": "scammed 1.45M",                 // reason the user is on the scammer list
+    "uuid": "00617c1e4e214d3ab04dad9d93333dee" // the user's uuid
 }
 ```
 
@@ -28,19 +28,19 @@ If you would like to request the entire SBZ scammer list in JSON format, don't i
 > api.skybrokers.xyz/scammer
 ```json
 "01e3082ae31748e293978b02bb270cbe": {
-		"operated_staff": "BathTube#1696",
-		"reason": "Admitted to scam 2.5m in a dungeon carry.",
-		"uuid": "01e3082ae31748e293978b02bb270cbe"
+    "operated_staff": "BathTube#1696",
+    "reason": "Admitted to scam 2.5m in a dungeon carry.",
+    "uuid": "01e3082ae31748e293978b02bb270cbe"
 },
 "01ed38b3b0cc4764850042baf6b7dbc9": {
-		"operated_staff": "knarfie#0001",
-		"reason": "Attempte scam of 3.5 mil coins in a hoe backpack trade.",
-		"uuid": "01ed38b3b0cc4764850042baf6b7dbc9"
+    "operated_staff": "knarfie#0001",
+    "reason": "Attempte scam of 3.5 mil coins in a hoe backpack trade.",
+    "uuid": "01ed38b3b0cc4764850042baf6b7dbc9"
 },
 "01f291e881514471a12d23e9ef7c0199": {
-		"operated_staff": "worryga#7855",
-		"reason": "Coop kick scam w/ Mettatone",
-		"uuid": "01f291e881514471a12d23e9ef7c0199"
+    "operated_staff": "worryga#7855",
+    "reason": "Coop kick scam w/ Mettatone",
+    "uuid": "01f291e881514471a12d23e9ef7c0199"
 }
 ```
 
